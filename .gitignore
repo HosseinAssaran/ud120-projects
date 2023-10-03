@@ -11,3 +11,5 @@ my_feature_list.pkl
 .DS_Store
 __pycache__
 venv/
+sklearn-venv/
+.idea/

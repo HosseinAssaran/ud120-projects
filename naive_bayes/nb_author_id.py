@@ -9,7 +9,7 @@
     Sara has label 0
     Chris has label 1
 """
-    
+
 import sys
 from time import time
 sys.path.append("../tools/")
@@ -24,6 +24,24 @@ features_train, features_test, labels_train, labels_test = preprocess()
 
 ##############################################################
 # Enter Your Code Here
+from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+
+clf = GaussianNB()
+
+t0 = time()
+clf.fit(features_train, labels_train)
+print("Training time:", round(time()-t0, 3), "s")
+
+t0 = time()
+pred = clf.predict(features_test)
+print("Prediction time:", round(time()-t0, 3), "s")
+
+accuracy = accuracy_score(pred,labels_test)
+print("accuracy: ", accuracy)
+
+
 
 
 
