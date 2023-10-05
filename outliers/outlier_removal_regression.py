@@ -9,8 +9,8 @@ from outlier_cleaner import outlierCleaner
 
 
 ### load up some practice data with outliers in it
-ages = joblib.load( open("./outliers/practice_outliers_ages.pkl", "rb") )
-net_worths = joblib.load( open("./outliers/practice_outliers_net_worths.pkl", "rb") )
+ages = joblib.load( open("../outliers/practice_outliers_ages.pkl", "rb") )
+net_worths = joblib.load( open("../outliers/practice_outliers_net_worths.pkl", "rb") )
 
 
 
@@ -28,8 +28,10 @@ ages_train, ages_test, net_worths_train, net_worths_test = train_test_split(ages
 
 
 
-
-
+from sklearn.linear_model import LinearRegression
+reg = LinearRegression().fit(ages_train, net_worths_train)
+print("Initial Slope", reg.coef_)
+print("Initial score", reg.score(ages_test, net_worths_test))
 
 
 
@@ -67,6 +69,9 @@ if len(cleaned_data) > 0:
     ### refit your cleaned data!
     try:
         reg.fit(ages, net_worths)
+        print("New slope", reg.coef_)
+        print("New score", reg.score(ages_test, net_worths_test))
+
         plt.plot(ages, reg.predict(ages), color="blue")
     except NameError:
         print("You don't seem to have regression imported/created,")
