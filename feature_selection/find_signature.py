@@ -8,10 +8,11 @@ numpy.random.seed(42)
 ### The words (features) and authors (labels), already largely processed.
 ### These files should have been created from the previous (Lesson 10)
 ### mini-project.
-words_file = "../text_learning/your_word_data.pkl" 
-authors_file = "../text_learning/your_email_authors.pkl"
-word_data = joblib.load( open(words_file, "r"))
-authors = joblib.load( open(authors_file, "r") )
+
+words_file = "word_data_overfit.pkl" 
+authors_file = "email_authors_overfit.pkl"
+word_data = joblib.load( open(words_file, "rb"))
+authors = joblib.load( open(authors_file, "rb") )
 
 
 
@@ -25,6 +26,8 @@ features_train, features_test, labels_train, labels_test = train_test_split(word
 from sklearn.feature_extraction.text import TfidfVectorizer
 vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5, stop_words='english')
 features_train = vectorizer.fit_transform(features_train)
+feature_names = vectorizer.get_feature_names_out()
+print(feature_names[33604])
 features_test  = vectorizer.transform(features_test).toarray()
 
 
@@ -37,6 +40,15 @@ labels_train   = labels_train[:150]
 
 
 ### your code goes here
+from sklearn import tree
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(features_train, labels_train)
+importances = clf.feature_importances_
+for count, importance in enumerate(importances):
+    if importance > 0.2:
+        print(count, importance)
+print(clf.score(features_train, labels_train))
+print(clf.score(features_test, labels_test))
 
 
 
