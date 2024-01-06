@@ -42,33 +42,44 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
     for path in from_person:
         ### only look at first 200 emails when developing
         ### once everything is working, remove this line to run over full dataset
-        temp_counter += 1
+        #temp_counter += 1
         if temp_counter < 200:
-	        path = os.path.join('..', path[:-1])
-	        print(path)
-	        email = open(path, "r")
+            path = os.path.join('..', path[:-1])
+            print(path)
+            email = open(path, "r")
 
 	        ### use parseOutText to extract the text from the opened email
+            words = parseOutText(email)
 
 
 	        ### use str.replace() to remove any instances of the words
-	        ### ["sara", "shackleton", "chris", "germani"]
-
-
+            extra_words = ["sara", "shackleton", "chris", "germani"]
+            for extra_word in extra_words:
+                words = words.replace(extra_word, "")
+            
 	        ### append the text to word_data
+            word_data.append(words)
 
-
+ 
 	        ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
+            if name == "sara":
+                from_data.append('0')
+            else:
+                from_data.append('1')
 
-
-	        email.close()
+            email.close()
 
 print("Emails Processed")
 from_sara.close()
 from_chris.close()
-
+print(word_data[152])#tjonesnsf stephani and sam need nymex calendar 
 joblib.dump( word_data, open("your_word_data.pkl", "wb") )
 joblib.dump( from_data, open("your_email_authors.pkl", "wb") )
 
 
 ### in Part 4, do TfIdf vectorization here
+from sklearn.feature_extraction.text import TfidfVectorizer
+vectorizer = TfidfVectorizer(stop_words='english')
+vectorizer.fit_transform(word_data)
+print(len(vectorizer.get_feature_names_out()))#38755
+print(vectorizer.get_feature_names_out()[34596])#stephaniethank
