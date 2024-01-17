@@ -40,16 +40,27 @@ lfw_people = fetch_lfw_people(min_faces_per_person=70, resize=0.4)
 
 # introspect the images arrays to find the shapes (for plotting)
 n_samples, h, w = lfw_people.images.shape
+print("n_samples, h, w")
+print(n_samples, h, w)
 np.random.seed(42)
 
 # for machine learning we use the data directly (as relative pixel
 # position info is ignored by this model)
 X = lfw_people.data
+shape =  X.shape
+print(shape)
+print("X[0]:")
+print(X[0])
 n_features = X.shape[1]
+print(n_features)
 
 # the label to predict is the id of the person
 y = lfw_people.target
+#np.set_printoptions(threshold=sys.maxsize)
+print(len(y))
+print(set(y))
 target_names = lfw_people.target_names
+print(target_names)
 n_classes = target_names.shape[0]
 
 print("Total dataset size:")
@@ -64,7 +75,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 ###############################################################################
 # Compute a PCA (eigenfaces) on the face dataset (treated as unlabeled
 # dataset): unsupervised feature extraction / dimensionality reduction
-n_components = 150
+n_components = 75
 
 print("Extracting the top %d eigenfaces from %d faces" % (n_components, X_train.shape[0]))
 t0 = time()
@@ -72,10 +83,17 @@ pca = PCA(n_components=n_components, whiten=True).fit(X_train)
 print("done in %0.3fs" % (time() - t0))
 
 eigenfaces = pca.components_.reshape((n_components, h, w))
+print(pca.components_.shape)
+print(pca.explained_variance_ratio_[0])
+print(pca.explained_variance_ratio_[1])
 
+print("convert to:")
+print(eigenfaces.shape)
 print("Projecting the input data on the eigenfaces orthonormal basis")
 t0 = time()
 X_train_pca = pca.transform(X_train)
+print(X_train.shape)
+print(X_test.shape)
 X_test_pca = pca.transform(X_test)
 print("done in %0.3fs" % (time() - t0))
 
