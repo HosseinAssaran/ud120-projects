@@ -95,16 +95,39 @@ k_features = 15
 selected_features = sorted_features.head(k_features).index
 print(selected_features)
 
-exit()
 ### Task 2: Remove outliers
+x = X["bonus"]
+y = X["salary"]
+print(x)
+print(len(y))
+x = pd.to_numeric(x, errors='coerce')
+y = pd.to_numeric(y, errors='coerce')
+print("outlier",x[x> 80000000])
+
+
+X= X.drop('TOTAL')
+y = y.drop('TOTAL')
+
+print("new outlier",x[(x > 5000000) & (y > 1000000)])
+# print("Pop out: ", X)
+x = X["bonus"]
+import matplotlib.pyplot
+matplotlib.pyplot.scatter(x, y)
+matplotlib.pyplot.xlabel("bonus")
+matplotlib.pyplot.ylabel("poi")
+# matplotlib.pyplot.show()
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
+
 
 ### Extract features and labels from dataset for local testing
 data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
 
+print(labels)
+print(features)
+exit()
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
 ### Note that if you want to do PCA or other multi-stage operations,
