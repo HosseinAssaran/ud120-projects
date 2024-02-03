@@ -1,0 +1,5 @@
+# Set to LF line endings for all files
+* text=auto eol=lf
+
+# Explicitly declare files that should use CRLF
+*.bat text eol=crlf
